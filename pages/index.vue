@@ -1,9 +1,15 @@
 <script lang="ts" setup>
 
-import {Projets} from "~/models/Projets";
+import CardProjets from "~/components/card-projets.vue";
 
-let config = useRuntimeConfig()
-const { data: projets } = await useLazyFetch<Projets[]>(`${config.public.apiBase}/projets`)
+let config = useRuntimeConfig(),
+    projets = ref([])
+
+const {data, pending, error, refresh} = await useFetch(`${config.public.apiBase}/api/projets`, {
+  onResponse({request, response, options}) {
+    projets.value = response._data['hydra:member']
+  },
+})
 
 </script>
 
@@ -12,21 +18,29 @@ const { data: projets } = await useLazyFetch<Projets[]>(`${config.public.apiBase
     <div class="relative left-hero z-20 md:w-7/12 md:space-y-6">
       <div class="space-y-4">
         <h1 class="text-3xl text-secondary font-bold md:text-[45px] lg:font-extrabold">Bonjour !</h1>
-        <h2 class="text-2xl font-bold text-primary md:text-[45px] lg:leading-[50px] dark:text-white">Je suis Louis: développeur front-end junior.</h2>
-        <p class="font-semibold text-lg dark:text-white">Cela fait désormais quatre merveilleuses années que ma passion se trouve dans l'univers du web, plus spécifiquement dans le développement front-end. Je suis actuellement en contrat à durée indéterminée chez Mobizel, où je m'épanouis en tant que développeur front-end. Mon quotidien est rythmé par la réalisation de divers projets et l'apprentissage de nouvelles technos, une source inépuisable de stimulation pour moi.</p>
+        <h2 class="text-2xl font-bold text-primary md:text-[45px] lg:leading-[50px] dark:text-white">Je suis Louis:
+          développeur front-end junior.</h2>
+        <p class="font-semibold text-lg dark:text-white">Cela fait désormais quatre merveilleuses années que ma passion
+          se trouve dans l'univers du web, plus spécifiquement dans le développement front-end. Je suis actuellement en
+          contrat à durée indéterminée chez Mobizel, où je m'épanouis en tant que développeur front-end. Mon quotidien
+          est rythmé par la réalisation de divers projets et l'apprentissage de nouvelles technos, une source
+          inépuisable de stimulation pour moi.</p>
       </div>
       <div class="md:flex md:!mt-16">
-        <NuxtLink to="creations" class="hero_buttons relative flex items-center justify-center bg-primary text-white font-bold overflow-hidden h-[50px] w-full mx-auto mt-4 rounded-md md:max-w-[250px] sm:max-w-[320px] md:h-[40px] md:mx-0 md:mr-4 lg:max-w-[300px] lg:h-[50px] lg:text-xl lg:mt-0 dark:bg-secondary">
+        <NuxtLink to="creations"
+                  class="hero_buttons relative flex items-center justify-center bg-primary text-white font-bold overflow-hidden h-[50px] w-full mx-auto mt-4 rounded-md md:max-w-[250px] sm:max-w-[320px] md:h-[40px] md:mx-0 md:mr-4 lg:max-w-[300px] lg:h-[50px] lg:text-xl lg:mt-0 dark:bg-secondary">
           <span class="relative z-50">Voir mes projets</span>
         </NuxtLink>
 
-        <NuxtLink to="/contact/" class="relative flex items-center justify-center border border-primary text-primary font-bold overflow-hidden h-[50px] w-full mx-auto mt-4 rounded-md sm:max-w-[320px] md:max-w-[250px] md:h-[40px] md:mx-0 lg:max-w-[300px] lg:h-[50px] lg:text-xl lg:mt-0 dark:border-secondary dark:text-secondary">
+        <NuxtLink to="/contact/"
+                  class="relative flex items-center justify-center border border-primary text-primary font-bold overflow-hidden h-[50px] w-full mx-auto mt-4 rounded-md sm:max-w-[320px] md:max-w-[250px] md:h-[40px] md:mx-0 lg:max-w-[300px] lg:h-[50px] lg:text-xl lg:mt-0 dark:border-secondary dark:text-secondary">
           <span class="relative z-50">Me contacter</span>
         </NuxtLink>
       </div>
     </div>
     <div class="hidden right-hero relative z-10 h-full md:w-5/12 md:block">
-      <svg class="absolute mx-auto w-full top-[-100px] left-0 lg:relative lg:top-0" viewBox="0 0 348 396" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="absolute mx-auto w-full top-[-100px] left-0 lg:relative lg:top-0" viewBox="0 0 348 396" fill="none"
+           xmlns="http://www.w3.org/2000/svg">
         <path opacity="0.48"
               d="M302.232 105.202C292.412 130.381 314.782 160.453 303.129 184.843C293.763 204.392 267.741 209.273 253.439 225.559C236.314 245.069 240.06 275.516 227.457 298.207C214.198 322.048 184.429 334.644 174.944 360.264C172 368.167 170.555 377.808 164 382.688C147.849 380.465 132.334 374.924 118.431 366.415C99.6998 354.849 84.3674 338.616 66.2521 326.1C50.8796 315.47 33.6875 307.607 18.743 296.375C11.8508 291.179 5.56743 285.222 0.0123291 278.618C3.51232 275.955 7.48421 273.977 11.719 272.788C19.923 261.142 30.5224 251.384 42.8071 244.165C55.0918 236.947 68.7782 232.436 82.9492 230.935C97.0641 229.517 111.286 231.175 125.455 232.018C137.737 232.722 150.032 232.825 162.341 232.325C169.525 232.018 177.058 231.389 183.051 227.391C195.614 218.941 195.374 200.367 203.722 187.745C211.161 176.499 224.58 171.097 236.996 165.829C249.412 160.56 262.577 153.861 268.129 141.573C273.226 130.327 270.617 117.237 272.464 105.042C274.029 94.5719 278.846 84.9176 283.582 75.4639C286.325 70.0217 293.563 73.953 299.021 76.654C301.735 78.0542 303.97 80.2299 305.443 82.904C306.915 85.5782 307.558 88.6298 307.29 91.6703C306.741 96.484 303.985 100.696 302.232 105.202Z"
               fill="#72D2AE"></path>
@@ -81,8 +95,12 @@ const { data: projets } = await useLazyFetch<Projets[]>(`${config.public.apiBase
         <path
             d="M123.782 261.154C123.415 261.515 123.001 261.826 122.551 262.077C122.484 261.97 122.431 261.863 122.364 261.77C121.026 259.256 122.284 256.18 123.595 253.64C128.991 243.174 134.967 233.019 141.496 223.219C142.587 221.753 143.486 220.153 144.172 218.459C144.643 216.861 144.934 215.215 145.041 213.552C145.309 211.292 145.67 209.059 146.112 206.866C149.497 204.085 154.862 201.21 154.862 200.18C155.089 205.181 155.223 210.155 155.263 215.17C155.169 218.112 127.863 257.517 123.782 261.154Z"
             fill="url(#paint4_linear)"></path>
-        <path d="M313.411 70.4647L290.202 60.2972C288.605 59.5975 286.743 60.3243 286.043 61.9205L282.509 69.9788C281.808 71.575 282.536 73.4362 284.133 74.1359L307.341 84.3034C308.938 85.0031 310.8 84.2763 311.5 82.6801L315.035 74.6218C315.735 73.0256 315.008 71.1644 313.411 70.4647Z" fill="#25285C"></path>
-        <path d="M313.736 76.0806L286.166 64.002C284.826 63.415 283.264 64.0247 282.676 65.3639L282.601 65.5354C282.014 66.8746 282.624 68.4361 283.964 69.0231L311.534 81.1017C312.874 81.6887 314.437 81.0789 315.024 79.7397L315.099 79.5683C315.687 78.2291 315.076 76.6676 313.736 76.0806Z" fill="#25285C"></path>
+        <path
+            d="M313.411 70.4647L290.202 60.2972C288.605 59.5975 286.743 60.3243 286.043 61.9205L282.509 69.9788C281.808 71.575 282.536 73.4362 284.133 74.1359L307.341 84.3034C308.938 85.0031 310.8 84.2763 311.5 82.6801L315.035 74.6218C315.735 73.0256 315.008 71.1644 313.411 70.4647Z"
+            fill="#25285C"></path>
+        <path
+            d="M313.736 76.0806L286.166 64.002C284.826 63.415 283.264 64.0247 282.676 65.3639L282.601 65.5354C282.014 66.8746 282.624 68.4361 283.964 69.0231L311.534 81.1017C312.874 81.6887 314.437 81.0789 315.024 79.7397L315.099 79.5683C315.687 78.2291 315.076 76.6676 313.736 76.0806Z"
+            fill="#25285C"></path>
         <path
             d="M345.019 39.2404C343.216 43.3645 340.438 46.9895 336.924 49.804L314.849 71.4792L289.054 60.1803L291.422 28.0886C291.403 23.9248 292.314 19.8092 294.09 16.0425C295.866 12.2758 298.461 8.9531 301.686 6.31696C304.911 3.68082 308.684 1.79784 312.73 0.805549C316.777 -0.186744 320.993 -0.263297 325.073 0.58147C329.153 1.42624 332.992 3.171 336.31 5.68833C339.629 8.20567 342.343 11.432 344.255 15.1318C346.166 18.8315 347.227 22.9113 347.359 27.073C347.491 31.2348 346.691 35.3735 345.019 39.187V39.2404Z"
             fill="#25285C"></path>
@@ -92,35 +110,45 @@ const { data: projets } = await useLazyFetch<Projets[]>(`${config.public.apiBase
         <path
             d="M298.299 64.7266C297.98 55.2177 299.771 45.7561 303.543 37.0208C304.386 35.0685 305.697 32.889 307.811 32.6884C310.42 32.4477 312.213 35.3627 312.44 38.037C312.58 39.7462 312.353 41.4656 311.774 43.0799C311.195 44.6942 310.277 46.1661 309.082 47.3971C308.655 45.0049 308.905 42.541 309.805 40.2834C310.24 38.5482 311.063 36.9343 312.213 35.5633C312.808 34.893 313.585 34.4098 314.449 34.1725C315.314 33.9351 316.229 33.9537 317.083 34.2261C319.625 35.2424 320.026 38.7725 319.21 41.3933C318.265 44.3787 316.348 46.9626 313.765 48.7342C313.94 46.8944 314.598 45.1333 315.671 43.6285C316.745 42.1237 318.196 40.9284 319.879 40.1631C321.008 39.6143 322.281 39.432 323.518 39.6416C324.134 39.7584 324.703 40.0462 325.163 40.4719C325.622 40.8976 325.951 41.444 326.114 42.0485C326.22 42.7585 326.152 43.4839 325.913 44.1612C324.575 49.1755 320.789 53.187 316.856 56.6101C312.922 60.0332 308.614 63.0819 305.39 67.1736"
             stroke="white" stroke-width="0.8" stroke-miterlimit="10"></path>
-        <path d="M313.411 70.4647L290.202 60.2972C288.605 59.5975 286.743 60.3243 286.043 61.9205L282.509 69.9788C281.808 71.575 282.536 73.4362 284.133 74.1359L307.341 84.3034C308.938 85.0031 310.8 84.2763 311.5 82.6801L315.035 74.6218C315.735 73.0256 315.008 71.1644 313.411 70.4647Z" fill="#72D2AE"></path>
-        <path d="M313.736 76.0806L286.166 64.002C284.826 63.415 283.264 64.0247 282.676 65.3639L282.601 65.5354C282.014 66.8746 282.624 68.4361 283.964 69.0231L311.534 81.1017C312.874 81.6887 314.437 81.0789 315.024 79.7397L315.099 79.5683C315.687 78.2291 315.076 76.6676 313.736 76.0806Z" fill="#72D2AE"></path>
+        <path
+            d="M313.411 70.4647L290.202 60.2972C288.605 59.5975 286.743 60.3243 286.043 61.9205L282.509 69.9788C281.808 71.575 282.536 73.4362 284.133 74.1359L307.341 84.3034C308.938 85.0031 310.8 84.2763 311.5 82.6801L315.035 74.6218C315.735 73.0256 315.008 71.1644 313.411 70.4647Z"
+            fill="#72D2AE"></path>
+        <path
+            d="M313.736 76.0806L286.166 64.002C284.826 63.415 283.264 64.0247 282.676 65.3639L282.601 65.5354C282.014 66.8746 282.624 68.4361 283.964 69.0231L311.534 81.1017C312.874 81.6887 314.437 81.0789 315.024 79.7397L315.099 79.5683C315.687 78.2291 315.076 76.6676 313.736 76.0806Z"
+            fill="#72D2AE"></path>
         <defs>
-          <linearGradient id="paint0_linear" x1="109.921" y1="275.703" x2="125.976" y2="275.703" gradientUnits="userSpaceOnUse">
+          <linearGradient id="paint0_linear" x1="109.921" y1="275.703" x2="125.976" y2="275.703"
+                          gradientUnits="userSpaceOnUse">
             <stop offset="0.01"></stop>
             <stop offset="0.13" stop-opacity="0.69"></stop>
             <stop offset="1" stop-opacity="0"></stop>
           </linearGradient>
-          <linearGradient id="paint1_linear" x1="2052.35" y1="5461.16" x2="2293.07" y2="5461.16" gradientUnits="userSpaceOnUse">
+          <linearGradient id="paint1_linear" x1="2052.35" y1="5461.16" x2="2293.07" y2="5461.16"
+                          gradientUnits="userSpaceOnUse">
             <stop offset="0.01" stop-color="#131532"></stop>
             <stop offset="0.13" stop-opacity="0.69"></stop>
             <stop offset="1" stop-opacity="0"></stop>
           </linearGradient>
-          <linearGradient id="paint2_linear" x1="4565.65" y1="11075.2" x2="6761.41" y2="11250.8" gradientUnits="userSpaceOnUse">
+          <linearGradient id="paint2_linear" x1="4565.65" y1="11075.2" x2="6761.41" y2="11250.8"
+                          gradientUnits="userSpaceOnUse">
             <stop offset="0.01" stop-color="#131532"></stop>
             <stop offset="0.13" stop-opacity="0.69"></stop>
             <stop offset="1" stop-opacity="0"></stop>
           </linearGradient>
-          <linearGradient id="paint3_linear" x1="11406.4" y1="10175.9" x2="10673.7" y2="8276.24" gradientUnits="userSpaceOnUse">
+          <linearGradient id="paint3_linear" x1="11406.4" y1="10175.9" x2="10673.7" y2="8276.24"
+                          gradientUnits="userSpaceOnUse">
             <stop offset="0.01"></stop>
             <stop offset="0.13" stop-opacity="0.69"></stop>
             <stop offset="1" stop-opacity="0"></stop>
           </linearGradient>
-          <linearGradient id="paint4_linear" x1="5556.5" y1="15453.4" x2="7012.45" y2="16097" gradientUnits="userSpaceOnUse">
+          <linearGradient id="paint4_linear" x1="5556.5" y1="15453.4" x2="7012.45" y2="16097"
+                          gradientUnits="userSpaceOnUse">
             <stop offset="0.01" stop-color="#131532"></stop>
             <stop offset="0.13" stop-opacity="0.69"></stop>
             <stop offset="1" stop-opacity="0"></stop>
           </linearGradient>
-          <radialGradient id="paint5_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(316.356 34.8648) rotate(-156.342) scale(31.5717 31.5597)">
+          <radialGradient id="paint5_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+                          gradientTransform="translate(316.356 34.8648) rotate(-156.342) scale(31.5717 31.5597)">
             <stop offset="0.34" stop-color="white"></stop>
             <stop offset="1" stop-color="#72D2AE"></stop>
           </radialGradient>
@@ -130,10 +158,8 @@ const { data: projets } = await useLazyFetch<Projets[]>(`${config.public.apiBase
   </section>
   <section>
     <h2 class="text-2xl font-bold text-primary">Mes derniers projets</h2>
-    <div>
-      <article v-for="p in projets">
-        <div>{{ p.name }}</div>
-      </article>
+    <div class="grid gap-y-6">
+      <card-projets v-for="p in projets.slice(0, 3)" :name="p.name" :image="p.visuel" />
     </div>
   </section>
 </template>

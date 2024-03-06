@@ -2,9 +2,10 @@
 import {process} from "unenv/runtime/node/process/_process";
 
 export default defineNuxtConfig({
+    ssr : false,
     runtimeConfig: {
         public: {
-            apiBase: 'http://admin.louisbensi.fr/api'
+            apiBase: 'https://admin.louisbensi.fr'
         }
     },
     modules: [
