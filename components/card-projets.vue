@@ -1,22 +1,55 @@
 <script setup lang="ts">
+import ArrowRight from "~/components/svg/arrow-right.vue";
+
 let config = useRuntimeConfig()
 
 defineProps<{
   name?: string
   image?: string
   slug?: string
+  tags?: []
+  link?: string
 }>()
 </script>
 
 <template>
-  <article class="bg-white rounded-md overflow-hidden">
-    <div class="h-[250px]">
+  <article class="project">
+    <div class="h-[175px] overflow-hidden">
       <img :src="config.public.apiBase + '/uploads/images/' + image" alt="visuel porfolio"
-           class="w-full h-full object-cover">
+           class="w-full h-full object-cover ease-in-out duration-300">
     </div>
     <div class="p-4">
-      <p>{{ name }}</p>
-      <NuxtLink :to="slug"></NuxtLink>
+      <div>
+        <p class="text-lg font-semibold mb-2">{{ name }}</p>
+        <div class="flex flex-wrap gap-2">
+        <span v-for="t in tags"
+              class="text-xs text-primary bg-secondary/25 px-2 py-1 rounded-full font-medium">{{ t.label }}</span>
+        </div>
+      </div>
+      <NuxtLink :to="link" class="text-xs" target="_blank">
+        <ArrowRight class="absolute right-4 bottom-4" />
+      </NuxtLink>
     </div>
   </article>
 </template>
+
+<style lang="scss">
+
+.project {
+  @apply relative bg-white rounded-md overflow-hidden ease-in-out duration-300;
+  a {
+    &::after {
+      content: "";
+      @apply absolute top-0 left-0 w-full h-full;
+    }
+  }
+
+  &:hover {
+    @apply shadow;
+    img {
+      transform: scale(1.1);
+    }
+  }
+}
+
+</style>
