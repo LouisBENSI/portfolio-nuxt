@@ -9,11 +9,12 @@ defineProps<{
   slug?: string
   tags?: []
   link?: string
+  perso?: boolean
 }>()
 </script>
 
 <template>
-  <article class="project">
+  <article class="project" :class="perso ? 'border-b border-primary' : 'border-b border-secondary'">
     <div class="h-[175px] overflow-hidden">
       <img :src="config.public.apiBase + '/uploads/images/' + image" alt="visuel porfolio"
            class="w-full h-full object-cover ease-in-out duration-300">
@@ -26,9 +27,7 @@ defineProps<{
               class="text-xs text-primary bg-secondary/25 px-2 py-1 rounded-full font-medium">{{ t.label }}</span>
         </div>
       </div>
-      <NuxtLink :to="link" class="text-xs" target="_blank">
-        <ArrowRight class="absolute right-4 bottom-4" />
-      </NuxtLink>
+      <NuxtLink :to="link" class="text-xs"></NuxtLink>
     </div>
   </article>
 </template>

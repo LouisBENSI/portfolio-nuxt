@@ -10,7 +10,17 @@ export default defineNuxtConfig({
     },
     modules: [
         '@pinia/nuxt',
+        ['nuxt-mail', {
+            message: {
+                to: 'bensilouis@live.fr',
+            },
+            smtp: {
+                host: "louisbensi.fr",
+                port: 587,
+            },
+        }]
     ],
+
     css: ['~/assets/css/main.css', "~/assets/css/style.css"],
     postcss: {
         plugins: {
@@ -18,4 +28,5 @@ export default defineNuxtConfig({
             autoprefixer: {},
         },
     },
+
 })

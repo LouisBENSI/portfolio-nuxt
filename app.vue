@@ -4,7 +4,7 @@ import Header from "~/components/header.vue";
 
 <template>
   <Header/>
-  <main class="max-w-[1280px] mx-auto my-12 px-4 space-y-12">
+  <main class="max-w-[1280px] mx-auto my-12 px-4 space-y-12 xl:px-0">
     <NuxtPage/>
   </main>
 </template>

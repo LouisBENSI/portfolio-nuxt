@@ -12,7 +12,8 @@ let config = useRuntimeConfig(),
 const {data: projetsList} = await useFetch(`${config.public.apiBase}/api/projets`, {
   watch: [categoriesFilter],
   query: {
-    'categories.id' : categoriesFilter
+    'categories.id' : categoriesFilter,
+    'order[created_at]' : 'desc'
   },
   onResponse({request, response, options}) {
     projets.value = response._data['hydra:member']
@@ -35,7 +36,7 @@ const {data: categoriesList} = await useFetch(`${config.public.apiBase}/api/cate
         <Filter class="text-white"/>
       </div>
       <div
-          class="fixed bottom-0 left-0 w-full h-1/4 bg-white rounded-t-md z-20 p-4 flex flex-col gap-3 ease-in-out duration-300 lg:sticky lg:top-4 lg:h-auto lg:translate-y-0 lg:rounded-lg"
+          class="fixed bottom-0 left-0 w-full h-2/4 bg-white rounded-t-md z-20 p-4 flex flex-col gap-3 ease-in-out duration-300 lg:sticky lg:top-4 lg:h-auto lg:translate-y-0 lg:rounded-lg dark:text-white dark:bg-gray-900"
           :class="!isFilterOpen ? 'translate-y-full' : 'translate-y-0'">
         <h3 class="text-lg font-medium">Catégories</h3>
         <fieldset>
@@ -61,7 +62,8 @@ const {data: categoriesList} = await useFetch(`${config.public.apiBase}/api/cate
           :name="p.name"
           :image="p.visuel"
           :tags="p.tags"
-          :link="p.link"
+          :link="'/creations/' + p.slug"
+          :perso="p.perso"
       />
     </div>
   </div>
