@@ -5,7 +5,7 @@ import VisuelHero from "~/components/svg/visuel-hero.vue";
 
 let config = useRuntimeConfig(),
     date = new Date(),
-    careerYear = date.getFullYear() - 2020
+    careerYear = date.getFullYear() - 2020,
     projets = ref([])
 
 
