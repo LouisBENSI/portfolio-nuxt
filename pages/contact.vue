@@ -10,10 +10,10 @@ const subject = ref(''),
 const mail = useMail()
 
 const validateForm = async () => {
-
-  if (subject.value === '' && nom.value === '' && email.value === '' && message.value === '') {
+  if (subject.value === '' || nom.value === '' || email.value === '' || message.value === '') {
     error.value = true
   } else {
+    error.value = false
     const {data: sendContact} = await useFetch(`${config.public.apiBase}/api/contacts`, {
       method: 'post',
       body: {
@@ -29,7 +29,7 @@ const validateForm = async () => {
 </script>
 
 <template>
-  <div class="blockForm max-w-7xl mx-auto sm:py-12">
+  <div class="blockForm max-w-7xl mx-auto">
     <div class="error bg-red-200 p-2 rounded-md mb-4 flex items-center hidden" v-if="error">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-900" viewBox="0 0 20 20" fill="currentColor">
         <path fill-rule="evenodd"
@@ -41,7 +41,7 @@ const validateForm = async () => {
     <div class="relative bg-white shadow-xl rounded-lg overflow-hidden">
       <div class="grid grid-cols-1 lg:grid-cols-3">
         <!-- Contact information -->
-        <div class="relative overflow-hidden py-4 px-6 bg-secondary xl:p-12">
+        <div class="relative overflow-hidden py-4 px-6 bg-secondary hidden lg:block xl:p-12">
           <h1 class="text-xl font-semibold">Information de contact</h1>
           <div class="mt-4 text-sm lg:text-base">
             <p>Vous souhaitez me recruter ?</p>
@@ -57,8 +57,8 @@ const validateForm = async () => {
         <!-- Contact form -->
         <div class="py-10 px-6 sm:px-10 lg:col-span-2 xl:p-12">
           <h3 class="text-xl font-bold text-gray-900">Envoyez-moi un message !</h3>
-          <form ref="form" @submit.prevent="validateForm" action="#" method="POST"
-                class="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
+          <div
+              class="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
             <div class="sm:col-span-2">
               <label class="block text-sm font-medium text-gray-900">Sujet</label>
               <div class="mt-1">
@@ -92,11 +92,11 @@ const validateForm = async () => {
                           class="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-secondary focus:border-secondary border border-gray-300 rounded-md"/>
               </div>
             </div>
-            <button type="submit" id="submitForm"
+            <button type="button" @click="validateForm" id="submitForm"
                     class="hero_buttons sm:col-span-2 relative overflow-hidden mt-2 w-full mx-auto flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary">
               <span class="z-50">Envoyer le message</span>
             </button>
-          </form>
+          </div>
         </div>
       </div>
     </div>

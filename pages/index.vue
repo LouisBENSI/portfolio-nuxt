@@ -4,6 +4,8 @@ import CardProjets from "~/components/card-projets.vue";
 import VisuelHero from "~/components/svg/visuel-hero.vue";
 
 let config = useRuntimeConfig(),
+    date = new Date(),
+    careerYear = date.getFullYear() - 2020
     projets = ref([])
 
 
@@ -26,11 +28,7 @@ const {data, pending, error, refresh} = await useFetch(`${config.public.apiBase}
         <h1 class="text-3xl text-secondary font-bold md:text-[45px] lg:font-extrabold">Bonjour !</h1>
         <h2 class="text-2xl font-bold text-primary md:text-[45px] md:leading-[50px] dark:text-white">Je suis Louis:
           développeur front-end junior.</h2>
-        <p class="font-semibold text-lg dark:text-white">Cela fait désormais quatre merveilleuses années que ma passion
-          se trouve dans l'univers du web, plus spécifiquement dans le développement front-end. Je suis actuellement en
-          contrat à durée indéterminée chez Mobizel, où je m'épanouis en tant que développeur front-end. Mon quotidien
-          est rythmé par la réalisation de divers projets et l'apprentissage de nouvelles technos, une source
-          inépuisable de stimulation pour moi.</p>
+        <p class="font-semibold text-lg dark:text-white">Bienvenue sur mon portfolio ! Vous retrouverez la majorité de mon travail personnel et professionnel issu de {{ careerYear }} ans de métier.</p>
       </div>
       <div class="md:flex md:!mt-16">
         <NuxtLink to="creations"
